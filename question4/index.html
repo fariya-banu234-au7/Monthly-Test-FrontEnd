@@ -1,75 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>
-canvas {
-    border:1px solid #6326f3;
-    background-color: #f151c1;
-}
-</style>
+	<title>File Upload</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+	<script src="./upload.js"></script>
 </head>
-<body onload="startGame()">
-<script>
-var myGamePiece;
-function startGame() {
-    myGamePiece = new component(30, 30, "red", 10, 120);
-    myGameArea.start();
-}
-var myGameArea = {
-    canvas : document.createElement("canvas"),
-    start : function() {
-        this.canvas.width = 480;
-        this.canvas.height = 270;
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);
-    },
-    clear : function() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-}
-function component(width, height, color, x, y) {
-    this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;
-    this.x = x;
-    this.y = y;    
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
-    this.newPos = function() {
-        this.x += this.speedX;
-        this.y += this.speedY;        
-    }    
-}
-function updateGameArea() {
-    myGameArea.clear();
-    myGamePiece.newPos();    
-    myGamePiece.update();
-}
-function moveup() {
-    myGamePiece.speedY -= 1; 
-}
-function movedown() {
-    myGamePiece.speedY += 1; 
-}
-function moveleft() {
-    myGamePiece.speedX -= 1; 
-}
-function moveright() {
-    myGamePiece.speedX += 1; 
-}
-</script>
-<div style="text-align:center;width:480px;">
-  <button onclick="moveup()">UP</button><br><br>
-  <button onclick="moveleft()">LEFT</button>
-  <button onclick="moveright()">RIGHT</button><br><br>
-  <button onclick="movedown()">DOWN</button>
-</div>
-<p>Controll The Movement Of The Object Using These Keys!!</p>
+
+<body class="bg-primary">
+	<div class="container mt-5">
+		<div class="row mt-6 py-5">
+			<div class="col-md-5 m-auto bg-white">
+				<form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+					<div class="form-group mt-5">
+						<label for="">Upload Your File Here</label>
+						<input type=file id="media" class="form-control">
+					</div>
+
+					<div class="">
+						<input type="submit" class="btn btn-secondary">
+					</div>
+				</form>
+
+				<div class="progress mt-5 mb-4">
+					<div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+						aria-valuemax="100" style="width: 0%;">
+						0%
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
